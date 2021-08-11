@@ -8,46 +8,37 @@
   };
 
   outputs = { self, nixpkgs, emacs-overlay, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (
-      system: let
-        pkgs = import nixpkgs {
-          inherit system;
-          overlays = [ emacs-overlay.overlay ];
-        };
-        emacs = pkgs.emacs.pkgs.withPackages (
-          epkgs: with epkgs; [
-            (
-              pkgs.runCommand "default.el" {} ''
-                mkdir -p $out/share/emacs/site-lisp
-                cp ${./emacs.el} $out/share/emacs/site-lisp/default.el
-              ''
-            )
-            which-key
-            company
-            use-package
-            company-nixos-options
-            nix-mode
-            nixos-options
-            lsp-docker
-            lsp-latex
-            lsp-ui
-            magit
-            projectile
-            ivy
-            zerodark-theme
-            counsel
-            avy
-            swiper
-          ]
-        );
-      in
-        rec {
-          defaultPackage = emacs;
-          defaultApp = {
-            type = "app";
-            program = "${emacs}/bin/emacs";
+    let
+      makeEmacsPackage = (
+        system: (
+          import nixpkgs {
+            inherit system;
+            overlays = [ emacs-overlay.overlay ];
+          }
+        ).callPackage ./. {}
+      );
+    in
+      {
+        nixosModule = { pkgs, ... }: {
+          services.emacs = {
+            enable = true;
+            package = makeEmacsPackage pkgs.system;
+            defaultEditor = true;
+            install = true;
           };
-          checks = { inherit emacs; };
-        }
-    );
+        };
+      } // flake-utils.lib.eachDefaultSystem (
+        system:
+          let
+            emacs = makeEmacsPackage system;
+          in
+            rec {
+              defaultPackage = emacs;
+              defaultApp = {
+                type = "app";
+                program = "${emacs}/bin/emacs";
+              };
+              checks = { inherit emacs; };
+            }
+      );
 }
