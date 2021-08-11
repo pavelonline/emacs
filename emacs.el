@@ -40,7 +40,6 @@
   :config (counsel-mode))
 
 (use-package avy
-  :ensure t
   :bind (("M-s" . avy-goto-word-1)))
 
 (use-package zerodark
@@ -65,3 +64,9 @@
 (use-package lsp-ui :commands lsp-ui-mode)
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+
+(use-package projectile
+  :config
+  (projectile-mode +1)
+  :bind-keymap
+  ("C-c p" . projectile-command-map))
