@@ -62,19 +62,37 @@
   (which-key-mode)
   (which-key-setup-side-window-right))
 
+(use-package go-mode)
+
 (use-package lsp-mode
   :init
   (setq lsp-keymap-prefix "C-c l")
   :hook ((nix-mode . lsp)
 	 (c++-mode . lsp)
 	 (yaml-mode . lsp)
+	 (go-mode . lsp)
          (sh-mode . lsp)
          (json-mode . lsp)
-         (lsp-mode . lsp-enable-which-key-integration))
+         (lsp-mode . lsp-enable-which-key-integration)
+	 (lsp-mode . lsp-ui-mode))
   :commands lsp
   :custom
+  (lsp-gopls-server-path "@gopls@/bin/gopls")
   (lsp-nix-server-path "@rnixLsp@/bin/rnix-lsp")
-  (lsp-yaml-server-command '("@yamlLanguageServer@/bin/yaml-language-server" "--stdio")))
+  (lsp-yaml-server-command '("@yamlLanguageServer@/bin/yaml-language-server" "--stdio"))
+  (lsp-eldoc-render-all t)
+  (lsp-idle-delay 0.6)
+  (lsp-rust-analyzer-server-display-inlay-hints t))
+
+(use-package lsp-rust
+  :custom
+  (lsp-rust-analyzer-server-command '("@rustAnalyzer@/bin/rust-analyzer"))
+  ;; what to use when checking on-save. "check" is default, I prefer clippy
+  (lsp-rust-analyzer-cargo-watch-command "@clippy@/bin/cargo-clippy"))
+
+(use-package envrc
+  :config
+  (envrc-global-mode))
 
 (use-package lsp-bash
   :config
@@ -94,7 +112,12 @@
   :init
   (setq lsp-jedi-executable-command "@jediLanguageServer@/bin/jedi-language-server"))
 
-(use-package lsp-ui :commands lsp-ui-mode)
+(use-package lsp-ui
+  :commands lsp-ui-mode
+  :custom
+  (lsp-ui-peek-always-show t)
+  (lsp-ui-sideline-show-hover t)
+  (lsp-ui-doc-enable nil))
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
@@ -103,3 +126,31 @@
   (projectile-mode +1)
   :bind-keymap
   ("C-c p" . projectile-command-map))
+
+(use-package rustic
+  :bind (:map rustic-mode-map
+              ("M-j" . lsp-ui-imenu)
+              ("M-?" . lsp-find-references)
+              ("C-c C-c l" . flycheck-list-errors)
+              ("C-c C-c a" . lsp-execute-code-action)
+              ("C-c C-c r" . lsp-rename)
+              ("C-c C-c q" . lsp-workspace-restart)
+              ("C-c C-c Q" . lsp-workspace-shutdown)
+              ("C-c C-c s" . lsp-rust-analyzer-status))
+  :config
+  ;; uncomment for less flashiness
+  ;; (setq lsp-eldoc-hook nil)
+  ;; (setq lsp-enable-symbol-highlighting nil)
+  ;; (setq lsp-signature-auto-activate nil)
+
+  ;; comment to disable rustfmt on save
+  (setq rustic-format-on-save t)
+  (add-hook 'rustic-mode-hook 'svrg/rustic-mode-hook))
+
+(defun svrg/rustic-mode-hook ()
+  ;; so that run C-c C-c C-r works without having to confirm, but don't try to
+  ;; save rust buffers that are not file visiting. Once
+  ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
+  ;; no longer be necessary.
+  (when buffer-file-name
+    (setq-local buffer-save-without-query t)))

@@ -1,4 +1,4 @@
-{ runCommand, emacs, rnix-lsp, yaml-language-server, nodePackages, python3 }:
+{ runCommand, emacs, rnix-lsp, yaml-language-server, nodePackages, python3, gopls, rust-analyzer }:
 (
   (
     emacs.override {
@@ -17,7 +17,9 @@
   epkgs: with epkgs; [
     (
       runCommand "default.el" {
+        inherit gopls;
         rnixLsp = rnix-lsp;
+        rustAnalyzer = rust-analyzer;
         yamlLanguageServer = yaml-language-server;
         bashLanguageServer = nodePackages.bash-language-server;
         vscodeJsonLanguageserverBin = nodePackages.vscode-json-languageserver-bin;
@@ -45,10 +47,12 @@
         substituteAll ${./emacs.el} $out/share/emacs/site-lisp/default.el
       ''
     )
+    go-mode
     avy
     company
     company-nixos-options
     counsel
+    envrc
     fira-code-mode
     ivy
     json-mode
@@ -60,9 +64,11 @@
     nix-mode
     nixos-options
     projectile
+    rustic
     swiper
     use-package
     which-key
+    yasnippet
     zerodark-theme
   ]
 )
