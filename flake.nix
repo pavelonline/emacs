@@ -33,19 +33,35 @@
       } // flake-utils.lib.eachDefaultSystem (
         system:
           let
-            emacsOrig = (makePkgs system).emacs;
+            pkgs = makePkgs system;
+            emacsOrig = pkgs.emacs;
             emacs = makeEmacsPackage system;
+            snap = pkgs.snapTools.makeSnap {
+              meta = {
+                name = "svrg-emacs";
+                apps.svrg-emacs = {
+                  command = "${emacs}/bin/emacs";
+                  plugs = [
+                    "desktop"
+                    "home"
+                    "network"
+                    "x11"
+                  ];
+                };
+                confinement = "strict";
+              };
+            };
           in
             rec {
               defaultPackage = emacs;
               packages = {
-                inherit emacsOrig;
+                inherit emacsOrig snap;
               };
               defaultApp = {
                 type = "app";
                 program = "${emacs}/bin/emacs";
               };
-              checks = { inherit emacs; };
+              checks = { inherit emacs snap; };
             }
       );
 }
