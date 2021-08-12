@@ -45,9 +45,15 @@
 (use-package avy
   :bind (("M-s" . avy-goto-word-1)))
 
+(defun svrg/load-theme-hook (frame)
+  (select-frame frame)
+  (load-theme 'zerodark t))
+
 (use-package zerodark
   :no-require t
-  :config (load-theme 'zerodark))
+  :config (if (daemonp)
+	      (add-hook 'after-make-frame-functions #'svrg/load-theme-hook)
+	    (load-theme 'zerodark t)))
 
 (use-package json-mode)
 
