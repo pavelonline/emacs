@@ -24,6 +24,9 @@
   ;; Following line is not needed if use-package.el is in ~/.emacs.d
   (require 'use-package))
 
+(use-package fira-code-mode
+  :hook prog-mode)
+
 (use-package ivy
   :config
   (ivy-mode)
@@ -59,7 +62,9 @@
 	 (c++-mode . lsp)
 	 (sh-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
-  :commands lsp)
+  :commands lsp
+  :custom
+  (lsp-nix-server-path "@rnixLsp@/bin/rnix-lsp"))
 
 (use-package lsp-ui :commands lsp-ui-mode)
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)

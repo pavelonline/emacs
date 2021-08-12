@@ -9,14 +9,13 @@
 
   outputs = { self, nixpkgs, emacs-overlay, flake-utils }:
     let
-      makeEmacsPackage = (
-        system: (
-          import nixpkgs {
-            inherit system;
-            overlays = [ emacs-overlay.overlay ];
-          }
-        ).callPackage ./. {}
+      makePkgs = system: (
+        import nixpkgs {
+          inherit system;
+          overlays = [ emacs-overlay.overlay ];
+        }
       );
+      makeEmacsPackage = system: (makePkgs system).callPackage ./. {};
     in
       {
         nixosModule = { pkgs, ... }: {
@@ -26,14 +25,22 @@
             defaultEditor = true;
             install = true;
           };
+          fonts.fonts = with pkgs; [
+            fira-code
+            fira-code-symbols
+          ];
         };
       } // flake-utils.lib.eachDefaultSystem (
         system:
           let
+            emacsOrig = (makePkgs system).emacs;
             emacs = makeEmacsPackage system;
           in
             rec {
               defaultPackage = emacs;
+              packages = {
+                inherit emacsOrig;
+              };
               defaultApp = {
                 type = "app";
                 program = "${emacs}/bin/emacs";

@@ -1,27 +1,44 @@
-{ emacs, runCommand }:
-emacs.pkgs.withPackages (
+{ runCommand, emacs, rnix-lsp }:
+(
+  (
+    emacs.override {
+      withGTK3 = true;
+      withGTK2 = false;
+      withMotif = false;
+    }
+  ).overrideAttrs (
+    attrs: {
+      postInstall = (attrs.postInstall or "") + ''
+        rm $out/share/applications/emacs.desktop
+      '';
+    }
+  )
+).pkgs.withPackages (
   epkgs: with epkgs; [
     (
-      runCommand "default.el" {} ''
+      runCommand "default.el" {
+        rnixLsp = rnix-lsp;
+      } ''
         mkdir -p $out/share/emacs/site-lisp
-        cp ${./emacs.el} $out/share/emacs/site-lisp/default.el
+        substituteAll ${./emacs.el} $out/share/emacs/site-lisp/default.el
       ''
     )
-    which-key
+    avy
     company
-    use-package
     company-nixos-options
-    nix-mode
-    nixos-options
+    counsel
+    fira-code-mode
+    ivy
     lsp-docker
     lsp-latex
     lsp-ui
     magit
+    nix-mode
+    nixos-options
     projectile
-    ivy
-    zerodark-theme
-    counsel
-    avy
     swiper
+    use-package
+    which-key
+    zerodark-theme
   ]
 )
