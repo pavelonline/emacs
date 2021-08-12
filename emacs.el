@@ -49,6 +49,7 @@
   :no-require t
   :config (load-theme 'zerodark))
 
+(use-package json-mode)
 
 (use-package which-key
   :config
@@ -60,11 +61,33 @@
   (setq lsp-keymap-prefix "C-c l")
   :hook ((nix-mode . lsp)
 	 (c++-mode . lsp)
-	 (sh-mode . lsp)
+	 (yaml-mode . lsp)
+         (sh-mode . lsp)
+         (json-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp
   :custom
-  (lsp-nix-server-path "@rnixLsp@/bin/rnix-lsp"))
+  (lsp-nix-server-path "@rnixLsp@/bin/rnix-lsp")
+  (lsp-yaml-server-command '("@yamlLanguageServer@/bin/yaml-language-server" "--stdio")))
+
+(use-package lsp-bash
+  :config
+  (lsp-dependency 'bash-language-server '(:system "@bashLanguageServer@/bin/bash-language-server")))
+
+(use-package lsp-json
+  :config
+  (lsp-dependency 'vscode-json-languageserver '(:system "@vscodeJsonLanguageserverBin@/bin/json-languageserver")))
+
+(use-package lsp-jedi
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-jedi)
+                         (lsp)))
+  :config
+  (with-eval-after-load "lsp-mode"
+    (add-to-list 'lsp-disabled-clients 'pyls)
+    (add-to-list 'lsp-enabled-clients 'jedi))
+  :init
+  (setq lsp-jedi-executable-command "@jediLanguageServer@/bin/jedi-language-server"))
 
 (use-package lsp-ui :commands lsp-ui-mode)
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
