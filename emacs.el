@@ -86,7 +86,6 @@
 
 (use-package lsp-rust
   :custom
-  (lsp-rust-analyzer-server-command '("@rustAnalyzer@/bin/rust-analyzer"))
   ;; what to use when checking on-save. "check" is default, I prefer clippy
   (lsp-rust-analyzer-cargo-watch-command "@clippy@/bin/cargo-clippy"))
 
@@ -127,6 +126,10 @@
   :bind-keymap
   ("C-c p" . projectile-command-map))
 
+(use-package yasnippet
+  :config
+  (yas-global-mode))
+
 (use-package rustic
   :bind (:map rustic-mode-map
               ("M-j" . lsp-ui-imenu)
@@ -137,6 +140,8 @@
               ("C-c C-c q" . lsp-workspace-restart)
               ("C-c C-c Q" . lsp-workspace-shutdown)
               ("C-c C-c s" . lsp-rust-analyzer-status))
+  :custom
+  (rustic-analyzer-command '("@rustAnalyzer@/bin/rust-analyzer"))
   :config
   ;; uncomment for less flashiness
   ;; (setq lsp-eldoc-hook nil)
