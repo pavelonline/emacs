@@ -18,6 +18,20 @@
       makeEmacsPackage = system: (makePkgs system).callPackage ./. {};
     in
       {
+        homeManagerModule = {pkgs, ...}:
+          {
+            services.emacs = {
+              enable = true;
+              package = makeEmacsPackage pkgs.system;
+              client = {
+                enable = true;
+              };
+              socketActivation.enable = true;
+            };
+            systemd.user.sessionVariables = {
+              EDITOR = "emacsclient -c";
+            };
+          };
         nixosModule = { pkgs, ... }: {
           services.emacs = {
             enable = true;
