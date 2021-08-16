@@ -1,4 +1,4 @@
-{ runCommand, emacs, rnix-lsp, yaml-language-server, nodePackages, python3, gopls, rust-analyzer }:
+{ runCommand, emacs, rnix-lsp, cmake-language-server, yaml-language-server, nodePackages, python3, gopls, rust-analyzer }:
 (
   (
     emacs.override {
@@ -20,6 +20,7 @@
         inherit gopls;
         rnixLsp = rnix-lsp;
         rustAnalyzer = rust-analyzer;
+        cmakeLanguageServer = cmake-language-server;
         yamlLanguageServer = yaml-language-server;
         bashLanguageServer = nodePackages.bash-language-server;
         vscodeJsonLanguageserverBin = nodePackages.vscode-json-languageserver-bin;

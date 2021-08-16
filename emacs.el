@@ -64,15 +64,30 @@
 
 (use-package go-mode)
 
+(defvar-local svrg/lsp-enabled nil)
+
+(defun svrg/maybe-start-lsp ()
+  (if svrg/lsp-enabled
+      (lsp)))
+
+(defun svrg/enable-lsp ()
+  (setq-local svrg/lsp-enabled t))
+
+(setenv "PATH"
+	(concat "@cmakeLanguageServer@/bin" ":"
+		(getenv "PATH")))
+
 (use-package lsp-mode
   :init
   (setq lsp-keymap-prefix "C-c l")
-  :hook ((nix-mode . lsp)
-	 (c++-mode . lsp)
-	 (yaml-mode . lsp)
-	 (go-mode . lsp)
-         (sh-mode . lsp)
-         (json-mode . lsp)
+  :hook ((envrc-mode . svrg/maybe-start-lsp)
+	 (nix-mode . svrg/enable-lsp)
+	 (cmake-mode . svrg/enable-lsp)
+	 (c++-mode . svrg/enable-lsp)
+	 (yaml-mode . svrg/enable-lsp)
+	 (go-mode . svrg/enable-lsp)
+         (sh-mode . svrg/enable-lsp)
+         (json-mode . svrg/enable-lsp)
          (lsp-mode . lsp-enable-which-key-integration)
 	 (lsp-mode . lsp-ui-mode))
   :commands lsp
