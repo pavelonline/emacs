@@ -24,6 +24,8 @@
   ;; Following line is not needed if use-package.el is in ~/.emacs.d
   (require 'use-package))
 
+(use-package telega)
+
 (use-package fira-code-mode
   :hook prog-mode)
 
@@ -103,6 +105,12 @@
   :custom
   ;; what to use when checking on-save. "check" is default, I prefer clippy
   (lsp-rust-analyzer-cargo-watch-command "@clippy@/bin/cargo-clippy"))
+
+
+(use-package lsp-metals
+  :hook (scala-mode . lsp)
+  :custom
+  (lsp-metals-server-command "@metalsServer@/bin/metals"))
 
 (use-package envrc
   :config

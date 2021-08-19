@@ -1,4 +1,4 @@
-{ runCommand, emacs, rnix-lsp, cmake-language-server, yaml-language-server, nodePackages, python3, gopls, rust-analyzer }:
+{ runCommand, emacs, rnix-lsp, cmake-language-server, yaml-language-server, nodePackages, python3, gopls, rust-analyzer, metals, jre_headless }:
 (
   (
     emacs.override {
@@ -23,7 +23,9 @@
         cmakeLanguageServer = cmake-language-server;
         yamlLanguageServer = yaml-language-server;
         bashLanguageServer = nodePackages.bash-language-server;
+        metalsServer = metals;
         vscodeJsonLanguageserverBin = nodePackages.vscode-json-languageserver-bin;
+        jre = jre_headless;
         jediLanguageServer = python3.pkgs.callPackage ./jedi-language-server.nix {
           docstring-to-markdown = python3.pkgs.callPackage ./docstring-to-markdown.nix {};
           jedi = python3.pkgs.callPackage ./jedi.nix {};
@@ -59,6 +61,8 @@
     json-mode
     lsp-docker
     lsp-latex
+    lsp-metals
+    lsp-java
     lsp-jedi
     lsp-ui
     magit
@@ -67,6 +71,7 @@
     projectile
     rustic
     swiper
+    telega
     use-package
     which-key
     yasnippet
