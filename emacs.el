@@ -134,6 +134,10 @@
   :init
   (setq lsp-jedi-executable-command "@jediLanguageServer@/bin/jedi-language-server"))
 
+(use-package python-black
+  :after python
+  :hook (python-mode . python-black-on-save-mode-enable-dwim))
+
 (use-package lsp-ui
   :commands lsp-ui-mode
   :custom

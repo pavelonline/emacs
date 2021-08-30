@@ -69,6 +69,7 @@
     nix-mode
     nixos-options
     projectile
+    python-black
     rustic
     swiper
     telega
