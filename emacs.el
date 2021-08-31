@@ -29,6 +29,15 @@
 (use-package fira-code-mode
   :hook prog-mode)
 
+(use-package undo-tree
+  :config (global-undo-tree-mode))
+
+(use-package multiple-cursors
+  :bind (("C-S-c C-S-c" . mc/edit-lines)
+	 ("C->" . mc/mark-next-like-this)
+	 ("C-<" . mc/mark-previous-like-this)
+	 ("C-c C-<" . mc/mark-all-like-this)))
+
 (use-package ivy
   :config
   (ivy-mode)

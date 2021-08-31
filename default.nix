@@ -66,6 +66,7 @@
     lsp-jedi
     lsp-ui
     magit
+    multiple-cursors
     nix-mode
     nixos-options
     projectile
@@ -73,6 +74,7 @@
     rustic
     swiper
     telega
+    undo-tree
     use-package
     which-key
     yasnippet
