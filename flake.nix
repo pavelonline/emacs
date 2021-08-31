@@ -18,7 +18,7 @@
       makeEmacsPackage = system: (makePkgs system).callPackage ./. {};
     in
       {
-        homeManagerModule = {pkgs, ...}:
+        homeManagerModule = { pkgs, ... }:
           {
             services.emacs = {
               enable = true;
@@ -31,19 +31,11 @@
             systemd.user.sessionVariables = {
               EDITOR = "emacsclient -c";
             };
+            home.packages = with pkgs; [
+              fira-code
+              fira-code-symbols
+            ];
           };
-        nixosModule = { pkgs, ... }: {
-          services.emacs = {
-            enable = true;
-            package = makeEmacsPackage pkgs.system;
-            defaultEditor = true;
-            install = true;
-          };
-          fonts.fonts = with pkgs; [
-            fira-code
-            fira-code-symbols
-          ];
-        };
       } // flake-utils.lib.eachDefaultSystem (
         system:
           let
