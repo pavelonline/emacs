@@ -27,7 +27,9 @@
 (use-package telega)
 
 (use-package fira-code-mode
-  :hook prog-mode)
+  :hook prog-mode
+  :config
+  (fira-code-mode-set-font))
 
 (use-package undo-tree
   :config (global-undo-tree-mode))
