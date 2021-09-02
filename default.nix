@@ -69,6 +69,7 @@
     multiple-cursors
     nix-mode
     nixos-options
+    nord-theme
     projectile
     python-black
     rustic
@@ -78,6 +79,5 @@
     use-package
     which-key
     yasnippet
-    zerodark-theme
   ]
 )

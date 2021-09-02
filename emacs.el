@@ -60,13 +60,13 @@
 
 (defun svrg/load-theme-hook (frame)
   (select-frame frame)
-  (load-theme 'zerodark t))
+  (load-theme 'nord t))
 
 (use-package zerodark
   :no-require t
   :config (if (daemonp)
 	      (add-hook 'after-make-frame-functions #'svrg/load-theme-hook)
-	    (load-theme 'zerodark t)))
+	    (load-theme 'nord t)))
 
 (use-package json-mode)
 
