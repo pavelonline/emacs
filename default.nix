@@ -1,4 +1,16 @@
-{ runCommand, emacs, rnix-lsp, cmake-language-server, yaml-language-server, nodePackages, python3, gopls, rust-analyzer, metals, jre_headless }:
+{ runCommand
+, cmake-language-server
+, emacs
+, gopls
+, jre_headless
+, metals
+, nodePackages
+, plantuml
+, python3
+, rnix-lsp
+, rust-analyzer
+, yaml-language-server
+}:
 (
   (
     emacs.override {
@@ -17,7 +29,7 @@
   epkgs: with epkgs; [
     (
       runCommand "default.el" {
-        inherit gopls;
+        inherit gopls plantuml;
         rnixLsp = rnix-lsp;
         rustAnalyzer = rust-analyzer;
         cmakeLanguageServer = cmake-language-server;
@@ -70,6 +82,7 @@
     nix-mode
     nixos-options
     nord-theme
+    plantuml-mode
     projectile
     python-black
     rustic

@@ -117,6 +117,11 @@
   ;; what to use when checking on-save. "check" is default, I prefer clippy
   (lsp-rust-analyzer-cargo-watch-command "@clippy@/bin/cargo-clippy"))
 
+(use-package plantuml-mode
+  :custom
+  (plantuml-executable-path "@plantuml@/bin/plantuml")
+  (plantuml-default-exec-mode 'executable))
+
 
 (use-package lsp-metals
   :hook (scala-mode . lsp)
