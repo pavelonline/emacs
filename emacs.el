@@ -101,6 +101,7 @@
 	 (go-mode . svrg/enable-lsp)
          (sh-mode . svrg/enable-lsp)
          (json-mode . svrg/enable-lsp)
+	 (sql-mode . svrg/enable-lsp)
          (lsp-mode . lsp-enable-which-key-integration)
 	 (lsp-mode . lsp-ui-mode))
   :commands lsp
@@ -149,6 +150,17 @@
     (add-to-list 'lsp-disabled-clients 'pyls))
   :init
   (setq lsp-jedi-executable-command "@jediLanguageServer@/bin/jedi-language-server"))
+
+
+(use-package lsp-sqls
+  :custom
+  (lsp-sqls-server "@sqlsServer@/bin/sqls")
+  (lsp-sqls-connections
+   '(
+     ((driver . "mysql") (dataSourceName . "hiqprimary_auto@tcp(default.minikube.local)"))
+     )
+   ))
+
 
 (use-package python-black
   :after python

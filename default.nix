@@ -36,6 +36,7 @@
         yamlLanguageServer = yaml-language-server;
         bashLanguageServer = nodePackages.bash-language-server;
         metalsServer = metals;
+        sqlsServer = callPackage ./sqls {};
         vscodeJsonLanguageserverBin = nodePackages.vscode-json-languageserver-bin;
         jre = jre_headless;
         jediLanguageServer = python3.pkgs.callPackage ./jedi-language-server.nix {
