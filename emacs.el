@@ -151,13 +151,22 @@
   :init
   (setq lsp-jedi-executable-command "@jediLanguageServer@/bin/jedi-language-server"))
 
+(use-package sql
+  :custom
+  (sql-connection-alist
+   '(("k8s"
+      (sql-product 'mysql)
+      (sql-server "default.minikube.local")
+      (sql-user "hiqprimary_auto")
+      (sql-password "mnfprod07")
+      (sql-database "hiqtrading_autotest")))))
 
 (use-package lsp-sqls
   :custom
   (lsp-sqls-server "@sqlsServer@/bin/sqls")
   (lsp-sqls-connections
    '(
-     ((driver . "mysql") (dataSourceName . "hiqprimary_auto@tcp(default.minikube.local)"))
+     ((driver . "mysql") (dataSourceName . "hiqprimary_auto:mnfprod07@tcp(default.minikube.local)/hiqtrading_autotest"))
      )
    ))
 
