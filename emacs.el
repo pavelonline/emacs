@@ -137,6 +137,10 @@
   :config
   (lsp-dependency 'bash-language-server '(:system "@bashLanguageServer@/bin/bash-language-server")))
 
+(use-package lsp-latex
+  :custom
+  (lsp-latex-texlab-executable "@texlab@/bin/texlab"))
+
 (use-package lsp-json
   :config
   (lsp-dependency 'vscode-json-languageserver '(:system "@vscodeJsonLanguageserverBin@/bin/json-languageserver")))

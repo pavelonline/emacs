@@ -9,6 +9,7 @@
 , python3
 , rnix-lsp
 , rust-analyzer
+, texlab
 , yaml-language-server
 }:
 (
@@ -29,7 +30,7 @@
   epkgs: with epkgs; [
     (
       runCommand "default.el" {
-        inherit gopls plantuml;
+        inherit gopls plantuml texlab;
         rnixLsp = rnix-lsp;
         rustAnalyzer = rust-analyzer;
         cmakeLanguageServer = cmake-language-server;
