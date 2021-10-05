@@ -34,6 +34,12 @@
 (use-package undo-tree
   :config (global-undo-tree-mode))
 
+(use-package flymake-grammarly
+  :hook ((text-mode . flymake-grammarly-load)
+	 (latex-mode . flymake-grammarly-load)
+	 (org-mode . flymake-grammarly-load)
+	 (markdown-mode . flymake-grammarly-load)))
+
 (use-package multiple-cursors
   :bind (("C-S-c C-S-c" . mc/edit-lines)
 	 ("C->" . mc/mark-next-like-this)

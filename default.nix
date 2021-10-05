@@ -71,6 +71,7 @@
     counsel
     envrc
     fira-code-mode
+    flymake-grammarly
     ivy
     json-mode
     lsp-docker
