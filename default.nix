@@ -94,6 +94,7 @@
     undo-tree
     use-package
     which-key
+    yaml-mode
     yasnippet
   ]
 )

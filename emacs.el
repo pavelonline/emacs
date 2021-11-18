@@ -204,6 +204,9 @@
   :config
   (yas-global-mode))
 
+(use-package yaml-mode
+  :mode "\\.yml\\'")
+
 (use-package rustic
   :bind (:map rustic-mode-map
               ("M-j" . lsp-ui-imenu)
