@@ -64,6 +64,12 @@
 (use-package avy
   :bind (("M-s" . avy-goto-word-1)))
 
+(use-package lsp-dart
+  :config
+  (defun lsp-dart-get-flutter-sdk-dir ()
+    (getenv "FLUTTER_ROOT")))
+
+
 (defun svrg/load-theme-hook (frame)
   (select-frame frame)
   (load-theme 'nord t))

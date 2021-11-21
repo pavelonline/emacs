@@ -69,6 +69,8 @@
     company
     company-nixos-options
     counsel
+    dart-mode
+    lsp-dart
     envrc
     fira-code-mode
     flymake-grammarly
