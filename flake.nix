@@ -2,7 +2,7 @@
   description = "My customized emacs";
 
   inputs = {
-    nixpkgs.url = github:NixOS/nixpkgs/nixos-21.05;
+    nixpkgs.url = github:NixOS/nixpkgs/nixos-21.11;
     emacs-overlay.url = github:nix-community/emacs-overlay;
     flake-utils.url = github:numtide/flake-utils;
   };
