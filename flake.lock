@@ -2,11 +2,11 @@
   "nodes": {
     "emacs-overlay": {
       "locked": {
-        "lastModified": 1640083461,
-        "narHash": "sha256-e3HJoCajImuDWOk6nnb6nJNzh0AD6PjL+Er4gzGT7ss=",
+        "lastModified": 1640199474,
+        "narHash": "sha256-VfS/kHnAQOpyDch4ZUZxz4CfmkbQUTZXxaDulbkdHEY=",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "043268ac469364214a02918717d74d9a0cc1af3d",
+        "rev": "07ae6f7d4c9b373be2e6640c4c397e50f856c6dc",
         "type": "github"
       },
       "original": {
