@@ -20,9 +20,7 @@
             };
             socketActivation.enable = true;
             extraConfig = ./emacs.el;
-          };
-          systemd.user.sessionVariables = {
-            EDITOR = "emacsclient -c";
+            defautEditor = true;
           };
           home.packages = with pkgs; [
             fira-code
