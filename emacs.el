@@ -43,6 +43,18 @@
   (enable-recursive-minibuffers t))
 
 
+(use-package dap-mode
+  :ensure t
+  :config
+  (dap-mode 1)
+  (dap-ui-mode 1)
+  (dap-tooltip-mode 1)
+  (dap-ui-controls-mode 1)
+  (require 'dap-lldb)
+  :custom
+  (dap-lldb-debug-program "lldb-vscode")
+  )
+
 (use-package counsel
   :ensure t
   :config (counsel-mode)
@@ -67,6 +79,9 @@
 	      (add-hook 'after-make-frame-functions #'svrg/load-theme-hook)
 	    (load-theme 'nord t)))
 
+(use-package magit
+  :ensure t)
+
 (use-package json-mode
   :ensure t)
 
@@ -88,6 +103,45 @@
 ;; (setenv "PATH"
 ;; 	(concat "@cmakeLanguageServer@/bin" ":"
 ;; 		(getenv "PATH")))
+
+(defcustom svrg/project-build-dirs ()
+  "Relations between source and build directories"
+  :type '(alist :key-type directory :value-type directory)
+  :group 'svrg)
+
+(defun svrg/build-directory ()
+  (if (projectile-project-p)
+      (let ((root (projectile-project-root)))
+	(alist-get (projectile-project-root) svrg/project-build-dirs nil nil 'equal))
+    (error "Not a projectile project")))
+
+(defun svrg/compile-commands-json ()
+  (let ((build-dir (svrg/build-directory)))
+    (if build-dir
+	(let ((json-file (concat build-dir "compile_commands.json")))
+	  (with-temp-buffer
+	    (insert-file-contents json-file)
+	    (json-parse-buffer)))
+      (error "Could not find build directory"))))
+
+(defun svrg/ccj-find-current ()
+  (let ((json (svrg/compile-commands-json))
+	(fname (buffer-file-name)))
+    (seq-find (lambda (ccjs-item)
+		(equal (gethash "file" ccjs-item) fname))
+	      json)))
+
+
+(defun svrg/compile-file ()
+  (interactive)
+  (let ((ccj-item (svrg/ccj-find-current)))
+    (let ((default-directory (gethash "directory" ccj-item)))
+      (compile (gethash "command" ccj-item)))))
+
+
+(define-key c++-mode-map (kbd "C-M-p p c") 'svrg/compile-file)
+
+
 
 (use-package cmake-mode
   :ensure t)

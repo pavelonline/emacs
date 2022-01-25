@@ -19,8 +19,13 @@
               enable = true;
             };
             socketActivation.enable = true;
-            extraConfig = ./emacs.el;
-            defautEditor = true;
+            extraOptions = [
+              "--load"
+              "${./emacs.el}"
+            ];
+          };
+          systemd.user.sessionVariables = {
+            EDITOR = "emacsclient -c";
           };
           home.packages = with pkgs; [
             fira-code
@@ -38,10 +43,14 @@
             ])
           ];
         })
-          emacsSvrg;
+          emacsSvrg
+          emacsPackagesFor;
       in
       {
         defaultPackage = emacsSvrg;
+        packages = {
+          dap-mode = (emacsPackagesFor emacsSvrg).melpaPackages.dap-mode;
+        };
         defaultApp = {
           type = "app";
           program = "${emacsSvrg}/bin/emacs";

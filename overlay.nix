@@ -3,6 +3,7 @@ final: prev: {
   emacsSvrg = final.wrapWithPackages {
     emacs = final.callPackage ./package.nix { };
     packages = with final; [
+      lldb
       yaml-language-server
       cmake-language-server
       nodePackages.bash-language-server
