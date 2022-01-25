@@ -8,66 +8,46 @@
   };
 
   outputs = { self, nixpkgs, emacs-overlay, flake-utils }:
-    let
-      makePkgs = system: (
-        import nixpkgs {
-          inherit system;
-          overlays = [ emacs-overlay.overlay ];
-        }
-      );
-      makeEmacsPackage = system: (makePkgs system).callPackage ./. {};
-    in
-      {
-        homeManagerModule = { pkgs, ... }:
-          {
-            services.emacs = {
+    {
+      homeManagerModule = { pkgs, ... }:
+        {
+          nixpkgs.overlays = [ emacs-overlay.overlay (import ./overlay.nix) ];
+          services.emacs = {
+            enable = true;
+            package = pkgs.emacsSvrg;
+            client = {
               enable = true;
-              package = makeEmacsPackage pkgs.system;
-              client = {
-                enable = true;
-              };
-              socketActivation.enable = true;
             };
-            systemd.user.sessionVariables = {
-              EDITOR = "emacsclient -c";
-            };
-            home.packages = with pkgs; [
-              fira-code
-              fira-code-symbols
-            ];
+            socketActivation.enable = true;
+            extraConfig = ./emacs.el;
           };
-      } // flake-utils.lib.eachDefaultSystem (
-        system:
-          let
-            pkgs = makePkgs system;
-            emacsOrig = pkgs.emacs;
-            emacs = makeEmacsPackage system;
-            snap = pkgs.snapTools.makeSnap {
-              meta = {
-                name = "svrg-emacs";
-                apps.svrg-emacs = {
-                  command = "${emacs}/bin/emacs";
-                  plugs = [
-                    "desktop"
-                    "home"
-                    "network"
-                    "x11"
-                  ];
-                };
-                confinement = "strict";
-              };
-            };
-          in
-            rec {
-              defaultPackage = emacs;
-              packages = {
-                inherit emacsOrig snap;
-              };
-              defaultApp = {
-                type = "app";
-                program = "${emacs}/bin/emacs";
-              };
-              checks = { inherit emacs snap; };
-            }
-      );
+          systemd.user.sessionVariables = {
+            EDITOR = "emacsclient -c";
+          };
+          home.packages = with pkgs; [
+            fira-code
+            fira-code-symbols
+          ];
+        };
+    } // flake-utils.lib.eachDefaultSystem (system:
+      let
+        inherit (import nixpkgs {
+          inherit system;
+          overlays = [
+            (nixpkgs.lib.composeManyExtensions [
+              emacs-overlay.overlay
+              (import ./overlay.nix)
+            ])
+          ];
+        })
+          emacsSvrg;
+      in
+      {
+        defaultPackage = emacsSvrg;
+        defaultApp = {
+          type = "app";
+          program = "${emacsSvrg}/bin/emacs";
+        };
+      }
+    );
 }
