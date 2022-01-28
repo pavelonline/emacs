@@ -139,7 +139,15 @@
       (compile (gethash "command" ccj-item)))))
 
 
+(defun svrg/lsp-format-paragraph ()
+  (interactive)
+  (save-mark-and-excursion
+    (mark-paragraph)
+    (lsp-format-region (region-beginning) (region-end))))
+
+
 (define-key c++-mode-map (kbd "C-M-p p c") 'svrg/compile-file)
+(define-key c++-mode-map (kbd "TAB") 'svrg/lsp-format-paragraph)
 
 
 
