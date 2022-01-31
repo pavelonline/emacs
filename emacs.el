@@ -170,6 +170,7 @@
          (sh-mode . svrg/enable-lsp)
          (json-mode . svrg/enable-lsp)
 	 (sql-mode . svrg/enable-lsp)
+	 (python-mode . svrg/enable-lsp)
          (lsp-mode . lsp-enable-which-key-integration)
 	 (lsp-mode . lsp-ui-mode))
   :commands lsp

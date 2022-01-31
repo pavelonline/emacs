@@ -8,6 +8,10 @@ final: prev: {
       cmake-language-server
       nodePackages.bash-language-server
       nodePackages.vscode-json-languageserver-bin
+      python39Packages.python-lsp-server
+      python39Packages.python-lsp-black
+      python39Packages.pyls-isort
+      python39Packages.rope
       rust-analyzer
       rnix-lsp
       gopls
