@@ -2,6 +2,9 @@
 (menu-bar-mode 0)
 (scroll-bar-mode 0)
 
+(add-to-list 'default-frame-alist
+             '(font . "JetBrainsMono Nerd Font Mono-14"))
+
 (setq
    backup-by-copying t      ; don't clobber symlinks
    backup-directory-alist
