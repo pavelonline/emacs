@@ -3,7 +3,7 @@
 (scroll-bar-mode 0)
 
 (add-to-list 'default-frame-alist
-             '(font . "JetBrainsMono Nerd Font Mono-14"))
+             '(font . "JetBrainsMono Nerd Font Mono-12"))
 
 (setq
    backup-by-copying t      ; don't clobber symlinks
@@ -152,7 +152,10 @@
 (define-key c++-mode-map (kbd "C-M-p p c") 'svrg/compile-file)
 (define-key c++-mode-map (kbd "TAB") 'svrg/lsp-format-paragraph)
 
-
+(use-package company
+  :ensure t
+  :init
+  (add-hook 'after-init-hook 'global-company-mode))
 
 (use-package cmake-mode
   :ensure t)
@@ -183,6 +186,8 @@
   (lsp-eldoc-render-all t)
   (lsp-idle-delay 0.6)
   (lsp-rust-analyzer-server-display-inlay-hints t)
+  (lsp-modeline-code-actions-mode t)
+  (lsp-enable-on-type-formatting t)
   )
 
 ;; (use-package lsp-rust
