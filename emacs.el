@@ -14,6 +14,10 @@
    kept-old-versions 2
    version-control t)       ; use versioned backups
 
+(use-package kubernetes
+  :ensure t
+  :commands (kubernetes-overview))
+
 (use-package fira-code-mode
   :ensure t
   :hook prog-mode
