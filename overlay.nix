@@ -7,7 +7,12 @@ final: prev: {
       yaml-language-server
       cmake-language-server
       nodePackages.bash-language-server
-      nodePackages.vscode-json-languageserver-bin
+      (
+        final.writeScriptBin "vscode-json-languageserver" ''
+          #!${final.runtimeShell}
+          exec ${nodePackages.vscode-json-languageserver-bin}/bin/json-languageserver "$@"
+        ''
+      )
       (python39.withPackages
         (ps: with ps; [
           jedi
