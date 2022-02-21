@@ -4,6 +4,7 @@ final: prev: {
     emacs = final.callPackage ./package.nix { };
     packages = with final; [
       lldb
+      taplo-lsp
       yaml-language-server
       cmake-language-server
       nodePackages.bash-language-server
