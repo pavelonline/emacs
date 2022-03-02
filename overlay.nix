@@ -27,6 +27,7 @@ final: prev: {
       gopls
       plantuml
       texlab
+      terraform-ls
       metals
     ];
   };

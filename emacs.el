@@ -167,6 +167,9 @@
 (use-package nix-mode
   :ensure t)
 
+(use-package terraform-mode
+  :ensure t)
+
 (use-package lsp-mode
   :ensure t
   :init
@@ -181,6 +184,7 @@
          (json-mode . svrg/enable-lsp)
 	 (sql-mode . svrg/enable-lsp)
 	 (python-mode . svrg/enable-lsp)
+	 (terraform-mode . svrg/enable-lsp)
          (lsp-mode . lsp-enable-which-key-integration)
 	 (lsp-mode . lsp-ui-mode))
   :commands lsp
